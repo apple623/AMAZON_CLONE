@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart - Amazon Clone</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #131921;
+      color: white;
+      padding: 15px 30px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .navbar a {
+      color: white;
+      float: right;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #111;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      vertical-align: middle;
+    }
+
+    img {
+      width: 100px;
+      border-radius: 5px;
+    }
+
+    input[type="number"] {
+      width: 50px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+    }
+
+    .qty-form {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .qty-form button {
+      padding: 5px 10px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: #ddd;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .qty-form button:hover {
+      background-color: #ccc;
+    }
+
+    .remove-btn {
+      background-color: #f0c14b;
+      border: 1px solid #a88734;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .remove-btn:hover {
+      background-color: #e6b422;
+    }
+
+    .total {
+      text-align: right;
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      display: block;
+      margin-top: 20px;
+      margin-left: auto;
+      background-color: #ffd814;
+      padding: 12px 20px;
+      border: none;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .checkout-btn:hover {
+      background-color: #f7ca00;
+    }
+
+    .flash-messages {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .flash-message {
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      background: #f10202;
+      color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="flash-messages">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-message {{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<div class="navbar">
+  Amazon Clone
+  <a href="{{ url_for('dashboard') }}">Dashboard 🛒</a>
+</div>
+
+<div class="container">
+  <h2>Your Shopping Cart</h2>
+  {% if cart_items|length > 0 %}
+  <table>
+    <tr>
+      <th>Product</th>
+      <th>Product Name</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+    {% set ns = namespace(total=0) %}
+    {% for item in cart_items %}
+    <tr>
+      <td>
+        <img src="{{ url_for('static', filename='user_product/' + item.product_pic) }}" alt="{{ item.product_name }}">
+      </td>
+      <td>{{ item.product_name }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('update_cart_item', item_id=item.id) }}" class="qty-form">
+          <button type="submit" name="action" value="decrease">−</button>
+          <input type="number" name="quantity" value="{{ item.quantity }}" readonly>
+          <button type="submit" name="action" value="increase">+</button>
+        </form>
+      </td>
+      <td>${{ item.product_price|float * item.quantity }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('remove_from_cart', item_id=item.id) }}">
+          <button type="submit" class="remove-btn">Remove</button>
+        </form>
+      </td>
+      {% set ns.total = ns.total + (item.product_price|float * item.quantity) %}
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h4 class="total">Total: ${{ '%.2f'|format(ns.total) }}</h4>
+  <a href="{{ url_for('checkout') }}" class="checkout-btn">Proceed to Checkout</a>
+
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+  
+</div>
+
+
+
+</body>
+
+</html>

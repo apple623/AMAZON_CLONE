@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Login</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f3f3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff9900;
+            margin-bottom: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 20px;
+            width: 320px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .login-container h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            width: 100%;
+            background-color: #ff9900;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        .login-btn:hover {
+            background-color: #e68a00;
+        }
+
+        .forgot-password {
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .forgot-password a {
+            text-decoration: none;
+            color: #0066c0;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .new-account {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .new-account a {
+            text-decoration: none;
+            color: #0066c0;
+            font-weight: bold;
+        }
+
+        .new-account a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+   <style>
+    .flash-message {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+    <div class="logo">Amazon</div>
+
+    <div class="login-container">
+        <h2>Sign in</h2>
+        <form action="/login" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="email">{{ form.login_email.label }}</label>
+                {{ form.login_email(size=32) }}
+                {% for error in form.login_email.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="password">{{ form.login_password.label }}</label>
+                {{ form.login_password(size=32, id="password") }}  
+                {% for error in form.login_password.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+                <p>aaaaaaaa</p>
+            </div>
+
+            <p>{{ form.submit(class="login-btn") }}</p>
+        </form>
+
+        <p class="forgot-password">
+            <a href="#">Forgot your password?</a>
+        </p>
+
+        <p class="new-account">
+            New to Amazon? <a href="/register">Create an account</a>
+        </p>
+        
+    </div>
+
+</body>
+</html>
