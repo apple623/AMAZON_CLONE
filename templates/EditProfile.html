@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon Registration</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amazon Edit Profile</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,6 +12,8 @@
             align-items: center;
             height: 100vh;
             background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
         }
         .logo {
             font-size: 24px;
@@ -22,12 +24,13 @@
         .container {
             background: white;
             padding: 20px;
-            width: 300px;
+            width: 320px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
         }
         .container h2 {
             text-align: center;
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -35,52 +38,55 @@
         .form-group label {
             display: block;
             font-weight: bold;
+            margin-bottom: 6px;
         }
         .form-group input {
             width: 100%;
-            padding: 8px;
+            padding: 8px 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
         }
         .register-btn {
             width: 100%;
             background-color: #ff9900;
             color: white;
-            padding: 10px;
+            padding: 12px;
             border: none;
             cursor: pointer;
             font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
         .register-btn:hover {
             background-color: #e68a00;
         }
         .error {
             color: red;
-            font-size: 12px;
+            font-size: 13px;
+            margin-top: 4px;
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="logo">Amazon</div>
     <div class="container">
-        <h2>reenter  Account</h2>
-        <form action="{{url_for('EditProfile', id=current_user.id)}}" method="POST">
+        <h2>Reenter Account</h2>
+        <form action="{{ url_for('EditProfile', id=current_user.id) }}" method="POST">
             {{ form.hidden_tag() }}
-        
+            
             <div class="form-group">
                 <label for="name">{{ form.name.label }}</label>
-                {{ form.name(size=32) }}
+                {{ form.name(size=32, id="name") }}
                 {% for error in form.name.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
             </div>
-        
-            <p>{{ form.submit(class="register-btn") }}</p>
+            
+            <button type="submit" class="register-btn">{{ form.submit.label.text }}</button>
         </form>
-        
     </div>
-
-    
-
 </body>
 </html>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Amazon Registration</title>
     <style>
         body {
@@ -12,6 +12,8 @@
             align-items: center;
             height: 100vh;
             background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
         }
         .logo {
             font-size: 24px;
@@ -28,6 +30,7 @@
         }
         .container h2 {
             text-align: center;
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -35,12 +38,14 @@
         .form-group label {
             display: block;
             font-weight: bold;
+            margin-bottom: 6px;
         }
         .form-group input {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 14px;
         }
         .register-btn {
             width: 100%;
@@ -50,6 +55,8 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
         .register-btn:hover {
             background-color: #e68a00;
@@ -57,6 +64,8 @@
         .error {
             color: red;
             font-size: 12px;
+            margin-top: 4px;
+            display: block;
         }
         .flash-messages {
             position: fixed;
@@ -94,37 +103,40 @@
         <h2>Create Account</h2>
         <form action="/register" method="POST" >
             {{ form.hidden_tag() }}
+            
             <div class="form-group">
-                <label for="name">{{ form.name.label }}</label>
-                {{ form.name(size=32) }}
+                <label for="{{ form.name.id }}">{{ form.name.label }}</label>
+                {{ form.name(class="form-control", id=form.name.id) }}
                 {% for error in form.name.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
             </div>
+            
             <div class="form-group">
-                <label for="email">{{ form.email.label }}</label>
-                {{ form.email(size=32) }}
+                <label for="{{ form.email.id }}">{{ form.email.label }}</label>
+                {{ form.email(class="form-control", id=form.email.id) }}
                 {% for error in form.email.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
             </div>
+            
             <div class="form-group">
                 <label for="password">{{ form.password.label }}</label>
-                {{ form.password(size=32, id="password") }}
+                {{ form.password(class="form-control", id="password", type="password") }}
                 {% for error in form.password.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
             </div>
 
             <div class="form-group">
-                <label for="check_password">Re-enter Password:</label>
-                {{ form.confrim_password(size=32, id="confrim_password") }}
-                {% for error in form.confrim_password.errors %}
+                <label for="confirm_password">Re-enter Password:</label>
+                {{ form.confirm_password(class="form-control", id="confirm_password", type="password") }}
+                {% for error in form.confirm_password.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
             </div>
-<p>aaaaaaaa</p>
-            <p>{{ form.submit(class="register-btn") }}</p>
+
+            <button type="submit" class="register-btn">{{ form.submit.label.text }}</button>
         </form>
     </div>
 
@@ -133,7 +145,7 @@
         setTimeout(function () {
             const flashMessages = document.querySelectorAll('.flash-message');
             flashMessages.forEach(msg => msg.style.display = 'none');
-        }, 7000); // 2 seconds
+        }, 7000); // hides after 7 seconds
     </script>
 
 </body>

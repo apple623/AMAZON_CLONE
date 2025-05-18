@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Search Results</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(to right, #f9f9f9, #e9e9e9);
             margin: 0;
             padding: 40px;
@@ -29,12 +29,13 @@
         }
 
         .product-card {
-            background-color: #ffffff;
+            background-color: #fff;
             padding: 20px;
             border-radius: 16px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
         }
 
         .product-card:hover {
@@ -78,11 +79,11 @@
     {% if results %}
     <div class="results-container">
         {% for product in results %}
-        <div class="product-card">
+        <div class="product-card" tabindex="0" role="button" aria-label="{{ product.product_name }} priced at ${{ product.product_price }}">
             <img src="{{ url_for('static', filename='user_product/' + product.product_pic) }}" 
-                 alt="{{ product.product_name }}">
+                 alt="{{ product.product_name or 'Product image' }}" />
             <h4>{{ product.product_name }}</h4>
-            <p>${{ product.product_price }}</p>
+            <p>${{ '%.2f'|format(product.product_price) }}</p>
         </div>
         {% endfor %}
     </div>

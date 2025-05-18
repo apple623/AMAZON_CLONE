@@ -60,56 +60,45 @@
             font-size: 14px;
         }
 
-        .upload-combo {
-    display: inline-block;
-    background-color: #0073e6;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    margin-right: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        .upload-btn-wrapper {
+            display: inline-block;
+            background-color: #0073e6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            margin-right: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-.upload-combo:hover {
-    background-color: #0281ff;
-    transform: translateY(-2px);
-}
+        .upload-btn-wrapper:hover {
+            background-color: #0281ff;
+            transform: translateY(-2px);
+        }
 
-.upload-combo i {
-    margin-right: 8px;
-}
+        .upload-btn-wrapper i {
+            margin-right: 8px;
+        }
 
-.file-input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-}
+        .upload-btn {
+            background-color: hsl(207, 90%, 54%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-.upload-btn {
-    background-color:hsl(207, 90%, 54%);;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.upload-btn:hover {
-    background-color: hsl;
-    transform: translateY(-2px);
-}
-
+        .upload-btn:hover {
+            background-color: hsl(207, 90%, 40%);
+            transform: translateY(-2px);
+        }
 
         .edit-btn {
             background-color: #ff9800;
@@ -225,6 +214,24 @@
             margin-top: 5px;
         }
 
+        ul.product-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul.product-list li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        ul.product-list img.profile-pic {
+            max-width: 150px;
+            border-radius: 8px;
+            margin-top: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
         @media (max-width: 700px) {
             .profile-container {
                 padding: 15px;
@@ -251,11 +258,10 @@
         <!-- Profile Header -->
         <div class="profile-header">
             {% if picture %}
-            <img src="{{ url_for('static', filename='profile pic/' ~ picture.profile_pic)}}" alt="Profile Picture" class="profile-pic">
+            <img src="{{ url_for('static', filename='profile pic/' ~ picture.profile_pic) }}" alt="Profile Picture" class="profile-pic" />
             {% else %}
-            <img src="{{ url_for('static', filename='image/default.jpg') }}" alt="Default Profile Picture" class="profile-pic">
+            <img src="{{ url_for('static', filename='image/default.jpg') }}" alt="Default Profile Picture" class="profile-pic" />
             {% endif %}
-
 
             <div class="user-info">
                 {% if current_user.is_authenticated %}
@@ -268,30 +274,27 @@
             <!-- Profile Picture Upload Form -->
             <form action="/addprofilepic" method="post" enctype="multipart/form-data" id="uploadForm">
                 {{ profile_pic_form.hidden_tag() }}
-            
                 <div class="upload-btn-wrapper">
                     <button class="upload-btn" type="button" onclick="triggerUpload()">
                         <i class="fas fa-upload"></i> Upload Profile Picture
                     </button>
-                    {{ profile_pic_form.userprofile_pic(class="form-control", id="fileInput", style="display: none;") }}
+                    {{ profile_pic_form.userprofile_pic(class="form-control", id="fileInput", style="display:none;") }}
                 </div>
             </form>
-            
-            <script>
-                function triggerUpload() {
-                    document.getElementById('fileInput').click();
-                }
-            
-                document.getElementById('fileInput').addEventListener('change', function () {
-                    if (this.files.length > 0) {
-                        document.getElementById('uploadForm').submit();
-                    }
-                });
-            </script>
-            
-            
-            
         </div>
+
+        <!-- Script to trigger file input and submit -->
+        <script>
+            function triggerUpload() {
+                document.getElementById('fileInput').click();
+            }
+
+            document.getElementById('fileInput').addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    document.getElementById('uploadForm').submit();
+                }
+            });
+        </script>
 
         <!-- Edit Profile Link -->
         <a href="/EditProfile/{{ current_user.id }}/edit" class="edit-btn">
@@ -303,7 +306,6 @@
             <h3>Add New Product</h3>
             <form action="/Profile" method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                
                 <div class="form-group">
                     <label for="product_name">{{ form.product_name.label }}</label>
                     {{ form.product_name(size=32) }}
@@ -311,7 +313,7 @@
                         <div class="error-message">{{ error }}</div>
                     {% endfor %}
                 </div>
-                
+
                 <div class="form-group">
                     <label for="product_price">{{ form.product_price.label }}</label>
                     {{ form.product_price(size=32) }}
@@ -319,7 +321,7 @@
                         <div class="error-message">{{ error }}</div>
                     {% endfor %}
                 </div>
-                
+
                 <div class="form-group">
                     <label for="product_pic">{{ form.product_pic.label }}</label>
                     {{ form.product_pic() }}
@@ -327,35 +329,27 @@
                         <div class="error-message">{{ error }}</div>
                     {% endfor %}
                 </div>
-                
+
                 <button type="submit" class="form-submit">Add Product</button>
             </form>
-        </form>
 
-        <h3>Your Products</h3>
-
-<ul>
-  {% for product in user_product_pic %}
-    <li>
-        <strong>{{ product.product_name }}</strong> - ${{ product.product_price }}
-        <br>
-        {% if product.product_pic %}
-            <img src="{{ url_for('static', filename='user_product/' ~ product.product_pic) }}"
-                 alt="{{ product.product_name }}"
-                 class="profile-pic">
-        {% else %}
-            <img src="{{ url_for('static', filename='user_product/default.jpg') }}"
-                 alt="Default Product Image"
-                 class="profile-pic">
-        {% endif %}
-    </li>
-  {% endfor %}
-</ul>
-
-
-
-
-
+            <h3>Your Products</h3>
+            <ul class="product-list">
+                {% for product in user_product_pic %}
+                    <li>
+                        <strong>{{ product.product_name }}</strong> - ${{ product.product_price }}<br>
+                        {% if product.product_pic %}
+                            <img src="{{ url_for('static', filename='user_product/' ~ product.product_pic) }}"
+                                 alt="{{ product.product_name }}"
+                                 class="profile-pic" />
+                        {% else %}
+                            <img src="{{ url_for('static', filename='user_product/default.jpg') }}"
+                                 alt="Default Product Image"
+                                 class="profile-pic" />
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </body>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Amazon Login</title>
     <style>
         /* Basic Reset */
@@ -50,6 +50,7 @@
             display: block;
             font-weight: bold;
             font-size: 14px;
+            margin-bottom: 6px;
         }
 
         .form-group input {
@@ -58,6 +59,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 14px;
+            box-sizing: border-box;
         }
 
         .login-btn {
@@ -70,6 +72,7 @@
             font-size: 16px;
             margin-top: 10px;
             border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
 
         .login-btn:hover {
@@ -110,29 +113,36 @@
         .error {
             color: red;
             font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .flash-messages {
+            width: 320px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .flash-message {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
-   <style>
-    .flash-message {
-        color: red;
-        font-weight: bold;
-    }
-</style>
-
-{% with messages = get_flashed_messages(with_categories=True) %}
-    {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-                <div class="flash-message">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
-
 
     <div class="logo">Amazon</div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
     <div class="login-container">
         <h2>Sign in</h2>
@@ -140,23 +150,22 @@
             {{ form.hidden_tag() }}
 
             <div class="form-group">
-                <label for="email">{{ form.login_email.label }}</label>
-                {{ form.login_email(size=32) }}
+                <label for="login_email">{{ form.login_email.label }}</label>
+                {{ form.login_email(size=32, id="login_email") }}
                 {% for error in form.login_email.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
             </div>
 
             <div class="form-group">
-                <label for="password">{{ form.login_password.label }}</label>
-                {{ form.login_password(size=32, id="password") }}  
+                <label for="login_password">{{ form.login_password.label }}</label>
+                {{ form.login_password(size=32, id="login_password") }}
                 {% for error in form.login_password.errors %}
                     <span class="error">{{ error }}</span>
                 {% endfor %}
-                <p>aaaaaaaa</p>
             </div>
 
-            <p>{{ form.submit(class="login-btn") }}</p>
+            <button type="submit" class="login-btn">{{ form.submit.label.text }}</button>
         </form>
 
         <p class="forgot-password">
@@ -166,7 +175,6 @@
         <p class="new-account">
             New to Amazon? <a href="/register">Create an account</a>
         </p>
-        
     </div>
 
 </body>

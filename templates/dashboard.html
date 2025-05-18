@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Amazon Dashboard</title>
     <style>
         /* Reset */
@@ -175,59 +175,6 @@
             background: #e68a00;
         }
 
-        /* Add Product Form */
-        .add-product-form {
-            background: #fff;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            color: #333;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: #ff9900;
-        }
-
-        .form-submit {
-            background: #ff9900;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 16px;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-
-        .form-submit:hover {
-            background: #e68a00;
-        }
-
         /* Flash messages */
         .flash-messages {
             position: fixed;
@@ -247,41 +194,39 @@
             font-size: 16px;
             font-weight: 600;
         }
-        
-/* Cart Count */
-.cart-count {
-    background-color: #ff9900;
-    color: white;
-    font-weight: bold;
-    border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 14px;
-    margin-left: 8px;
-    display: inline-block;
-}
 
-
+        /* Cart Count */
+        .cart-count {
+            background-color: #ff9900;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 14px;
+            margin-left: 8px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
     <iframe name="hiddenFrame" style="display:none;"></iframe>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">Amazon</div>
         <div class="search-bar">
             <form method="GET" action="{{ url_for('search') }}">
-            <input type="text" name="query" placeholder="Search products...">
-            <button type="submit">🔍</button>
-        </form>
+                <input type="text" name="query" placeholder="Search products..." />
+                <button type="submit">🔍</button>
+            </form>
         </div>
         <div class="nav-icons">
-            <a href="{{ url_for('cart') }}">cart </a>
+            <a href="{{ url_for('cart') }}">Cart</a>
             <a href="{{ url_for('Profile') }}">Profile 👤</a>
             <a href="{{ url_for('logout') }}">Logout 🔓</a>
         </div>
     </nav>
-    
-    
+
     <!-- Flash messages -->
     <div class="flash-messages">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -324,9 +269,9 @@
                 {% for product in products %}
                 <div class="product-card">
                     {% if product.product_pic != 'default.jpg' %}
-                    <img src="{{ url_for('static', filename='user_product/' + product.product_pic) }}" alt="{{ product.product_name }}">
+                    <img src="{{ url_for('static', filename='user_product/' + product.product_pic) }}" alt="{{ product.product_name }}" />
                     {% else %}
-                    <img src="{{ url_for('static', filename='user_product/default.jpg') }}" alt="Default Product Image">
+                    <img src="{{ url_for('static', filename='user_product/default.jpg') }}" alt="Default Product Image" />
                     {% endif %}
                     <h4>{{ product.product_name }}</h4>
                     <p>${{ product.product_price }}</p>
