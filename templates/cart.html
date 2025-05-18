@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Cart - Amazon Clone</title>
   <style>
     body {
@@ -17,11 +18,14 @@
       padding: 15px 30px;
       font-size: 22px;
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .navbar a {
       color: white;
-      float: right;
       font-size: 16px;
       text-decoration: none;
     }
@@ -39,9 +43,14 @@
       color: #111;
     }
 
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 600px;
     }
 
     table th, table td {
@@ -57,7 +66,7 @@
     }
 
     input[type="number"] {
-      width: 50px;
+      max-width: 60px;
       text-align: center;
       border: none;
       background: transparent;
@@ -133,6 +142,47 @@
       border-radius: 4px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
+
+    @media (max-width: 600px) {
+      .navbar {
+        font-size: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      table th, table td {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      img {
+        width: 70px;
+      }
+
+      .qty-form button {
+        padding: 4px 8px;
+        font-size: 16px;
+      }
+
+      .checkout-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      input[type="number"] {
+        max-width: 50px;
+        font-size: 14px;
+      }
+
+      .total {
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -157,38 +207,40 @@
 <div class="container">
   <h2>Your Shopping Cart</h2>
   {% if cart_items|length > 0 %}
-  <table>
-    <tr>
-      <th>Product</th>
-      <th>Product Name</th>
-      <th>Qty</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
-    {% set ns = namespace(total=0) %}
-    {% for item in cart_items %}
-    <tr>
-      <td>
-        <img src="{{ url_for('static', filename='user_product/' + item.product_pic) }}" alt="{{ item.product_name }}">
-      </td>
-      <td>{{ item.product_name }}</td>
-      <td>
-        <form method="POST" action="{{ url_for('update_cart_item', item_id=item.id) }}" class="qty-form">
-          <button type="submit" name="action" value="decrease">−</button>
-          <input type="number" name="quantity" value="{{ item.quantity }}" readonly>
-          <button type="submit" name="action" value="increase">+</button>
-        </form>
-      </td>
-      <td>${{ item.product_price|float * item.quantity }}</td>
-      <td>
-        <form method="POST" action="{{ url_for('remove_from_cart', item_id=item.id) }}">
-          <button type="submit" class="remove-btn">Remove</button>
-        </form>
-      </td>
-      {% set ns.total = ns.total + (item.product_price|float * item.quantity) %}
-    </tr>
-    {% endfor %}
-  </table>
+  <div class="table-wrapper">
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Product Name</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+      {% set ns = namespace(total=0) %}
+      {% for item in cart_items %}
+      <tr>
+        <td>
+          <img src="{{ url_for('static', filename='user_product/' + item.product_pic) }}" alt="{{ item.product_name }}">
+        </td>
+        <td>{{ item.product_name }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('update_cart_item', item_id=item.id) }}" class="qty-form">
+            <button type="submit" name="action" value="decrease">−</button>
+            <input type="number" name="quantity" value="{{ item.quantity }}" readonly>
+            <button type="submit" name="action" value="increase">+</button>
+          </form>
+        </td>
+        <td>${{ item.product_price|float * item.quantity }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('remove_from_cart', item_id=item.id) }}">
+            <button type="submit" class="remove-btn">Remove</button>
+          </form>
+        </td>
+        {% set ns.total = ns.total + (item.product_price|float * item.quantity) %}
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 
   <h4 class="total">Total: ${{ '%.2f'|format(ns.total) }}</h4>
   <a href="{{ url_for('checkout') }}" class="checkout-btn">Proceed to Checkout</a>
@@ -196,11 +248,7 @@
   {% else %}
     <p>Your cart is empty.</p>
   {% endif %}
-  
 </div>
 
-
-
 </body>
-
 </html>
